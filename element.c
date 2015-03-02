@@ -1,7 +1,7 @@
 #include "include/element.h"
 
 /* Creates a new element_t object */
-element_t* element_new_element(char* k, char* v)
+element_t* make_element(char* k, char* v)
 {
     /**
      * allocates space for the element_t object, which should be

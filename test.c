@@ -9,6 +9,14 @@ static char *test_map()
 {
     map_t* m = make_map();
     mu_assert("Map initialized incorrectly", map_size(m) == 0);
+    map_put(m, "hello", "world");
+    mu_assert("Map put failed", map_size(m) == 1);
+
+    /* check contents of map */
+    mu_assert("Map contains failed", map_contains(m, "hello") == 1);
+    mu_assert("Map contains failed", map_contains(m, "foo") == 0);
+
+    mu_assert("Map get failed", map_get(m, "hello") == "world");
     return 0;
 }
 

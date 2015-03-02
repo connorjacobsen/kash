@@ -12,6 +12,6 @@ typedef struct element {
 } element_t;
 
 /* Create a new element_t object */
-element_t* element_new_element(char* k, char* v);
+element_t* make_element(char* k, char* v);
 
 #endif /* ELEMENT_H_ */
