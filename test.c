@@ -17,6 +17,10 @@ static char *test_map()
     mu_assert("Map contains failed", map_contains(m, "foo") == 0);
 
     mu_assert("Map get failed", map_get(m, "hello") == "world");
+
+    map_del(m, "hello");
+    mu_assert("Map contains failed -- post del", map_contains(m, "hello") == 0);
+    mu_assert("Map del incorrectly", map_size(m) == 0);
     return 0;
 }
 

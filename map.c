@@ -114,3 +114,24 @@ int map_contains(map_t* m, char* key)
     }
     return 0;
 }
+
+/**
+ * Deletes the key-value pair with key @key from @m if exists.
+ *
+ * @param m -- map_t map to search.
+ * @param key -- char* key for which to search.
+ * @return void.
+ */
+void map_del(map_t* m, char* key)
+{
+    int i;
+    for (i = 0; i < m->size; i++) {
+        if (m->elements[i].key == key) {
+            /* set match equal to value at end of array */
+            m->elements[i] = m->elements[(m->size - 1)];
+            /* decrement size to effectively delete item */
+            m->size--;
+            return;
+        }
+    }
+}

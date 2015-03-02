@@ -30,5 +30,6 @@ size_t map_size(map_t* map);
 int    map_contains(map_t* m, char* key);
 char  *map_get(map_t* m, char* key);
 void   map_put(map_t* m, char* k, char* v);
+void   map_del(map_t* m, char* key);
 
 #endif /* MAP_H_ */
