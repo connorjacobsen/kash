@@ -1,14 +1,21 @@
 CC = cc
+CFLAGS = -g -Wall
 SOURCES = map.c element.c
-OUTPUTFILE = main
+OUTPUTFILE = kash
+LEX = lex
+YACC = yacc -y
 
-all:
-	$(CC) main.c $(SOURCES) -o $(OUTPUTFILE)
+all: lex.yy.c
+	$(CC) $(CFLAGS) lex.yy.c main.c $(SOURCES) -o $(OUTPUTFILE)
 
 test:
 	$(CC) test.c $(SOURCES) -o kash_test
 	./kash_test
 	rm kash_test
 
+lex.yy.c:
+	$(LEX) kash.l
+
 clean:
-	rm main
+	rm lex.yy.c
+	rm kash

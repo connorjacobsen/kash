@@ -1,10 +1,9 @@
-#include "include/element.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 int main(int argc, char* argv[])
 {
-    element_t* el = element_new_element("hello", "world");
-    printf("KEY: %s\n", el->key);
-    printf("VALUE: %s\n", el->value);
+    yylex();
 
     return 0;
 }
