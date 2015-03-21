@@ -6,6 +6,7 @@
 #include <termios.h>
 #include <unistd.h>
 #include "constants.h"
+#include "alias.h"
 #include "job.h"
 #include "process.h"
 

@@ -1,5 +1,9 @@
 #ifndef ALIAS_H_
 #define ALIAS_H_
+#include "stdio.h"
+#include "stdlib.h"
+#include "assert.h"
+#include "string.h"
 
 typedef struct alias_t {
     char *key;              /* the name used to identify the alias. */
@@ -13,7 +17,15 @@ struct alias_t *head;
 /* The tail of the alias list. */
 struct alias_t *tail;
 
-/* Creates an alias between a name and a word. */
+/* Initializes the alias list, should run on startup. */
+void initialize_alias_list(void);
+
+/**
+ * Creates an alias between a name and a word.
+ *
+ * Places the alias at the head of the alias list.
+ * This causes newer aliases to "overwrite" older ones.
+ */
 int alias(char *key, char *value);
 
 /* Removes an alias between a name and a word. */
@@ -27,5 +39,6 @@ char *resolvealias(char *key);
 
 /* Returns true if an alias exists for the given name. */
 int alias_exists(char* key);
+
 
 #endif /* ALIAS_H_ */
