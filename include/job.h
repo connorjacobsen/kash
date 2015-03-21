@@ -2,6 +2,7 @@
 #define JOB_H_
 
 #include <sys/types.h> /* need pid_t */
+#include "process.h"
 
 /**
  * A job is a pipeline of processes.
@@ -34,7 +35,7 @@ job_t *make_job(pid_t pgid, const char *command);
 int add_job(job_t *job_list, job_t *job);
 
 /* Find the active job with the indicated pgid. */
-job *find_job (pid_t pgid);
+job_t *find_job (pid_t pgid);
 
 /**
  * Return 1 if the job with the provided pgid was successfully removed.
