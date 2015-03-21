@@ -53,6 +53,34 @@ alias(char* key, char* value)
     return 1;
 }
 
+int
+unalias(char* key)
+{
+    alias_t *a = head;
+    alias_t *prev = a; /* trailing ptr */
+    for (; a != NULL; a = a->next)
+    {
+        if (strcmp(key, a->key) == 0)
+        {
+            free(a->key);
+            free(a->value);
+            prev->next = a->next; /* resolve gap in list */
+            free(a);
+            if (a == head)
+            {
+                head = a->next;
+            }
+            if (a == tail)
+            {
+                tail = prev;
+            }
+            return 1;
+        }
+        prev = prev->next;
+    }
+    return 0;
+}
+
 void
 print_aliases(void)
 {
