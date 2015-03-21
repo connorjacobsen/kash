@@ -117,6 +117,18 @@ alias_list_is_empty(void)
     return head == NULL;
 }
 
+char
+*resolve_alias(char* key)
+{
+    alias_t *a = head;
+    for (; a != NULL; a = a->next)
+    {
+        if (strcmp(key, a->key) == 0)
+            return a->value;
+    }
+    return 0;   
+}
+
 int
 alias_exists(char* key)
 {

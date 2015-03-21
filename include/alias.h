@@ -28,17 +28,26 @@ void initialize_alias_list(void);
  */
 int alias(char *key, char *value);
 
-/* Removes an alias between a name and a word. */
+/**
+ * Removes an alias between a name and a word.
+ *
+ * Returns 1 (true) if the alias was successfully removed, or
+ * returns 0 (false) if the alias was not found.
+ */
 int unalias(char *key);
 
 /* Prints out all exists aliases. */
 void print_aliases(void);
 
-/* Substitutes the word for the alias name. */
-char *resolvealias(char *key);
+/**
+ * Substitutes the word for the alias name. 
+ *
+ * NOTE: Must ensure the alias exists before calling this function,
+ * else the result *may* be garbage.
+ */
+char *resolve_alias(char *key);
 
 /* Returns true if an alias exists for the given name. */
 int alias_exists(char* key);
-
 
 #endif /* ALIAS_H_ */
