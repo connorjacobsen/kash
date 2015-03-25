@@ -1,21 +1,32 @@
 CC = cc
 CFLAGS = -g -Wall
-SOURCES = map.c element.c
+CSOURCES = main.c alias.c
+GENSOURCES = lex.yy.c kash.tab.c
+ALLSOURCES = $(CSOURCES) $(GENSOURCES)
 OUTPUTFILE = kash
-LEX = lex
-YACC = yacc -y
+LEX = flex
+YACC = bison -dv -t
 
-all: lex.yy.c
-	$(CC) $(CFLAGS) lex.yy.c main.c $(SOURCES) -o $(OUTPUTFILE)
+all: lex.yy.c kash.tab.c
+	$(CC) $(CFLAGS) $(ALLSOURCES) -o $(OUTPUTFILE)
 
 test:
-	$(CC) test.c $(SOURCES) -o kash_test
+	$(CC) test.c $(CSOURCES) -o kash_test
 	./kash_test
 	rm kash_test
 
-lex.yy.c:
-	$(LEX) kash.l
+lex.yy.c: kash.l
+	$(LEX) $<
+
+kash.tab.c: kash.y
+	$(YACC) $<
+
+.c.o:
+	$(CC) -c $<
 
 clean:
-	rm lex.yy.c
-	rm kash
+	rm -f $(CSOURCES:.c=.o)
+	rm -f $(GENSOURCES)
+	rm $(OUTPUTFILE)
+	rm kash.tab.h
+	rm kash.output

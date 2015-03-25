@@ -62,10 +62,6 @@ unalias(char* key)
     {
         if (strcmp(key, a->key) == 0)
         {
-            free(a->key);
-            free(a->value);
-            prev->next = a->next; /* resolve gap in list */
-            free(a);
             if (a == head)
             {
                 head = a->next;
@@ -73,7 +69,13 @@ unalias(char* key)
             if (a == tail)
             {
                 tail = prev;
+                prev->next = NULL;
+            } else {
+                prev->next = a->next; /* resolve gap in list */
             }
+            free(a->key);
+            free(a->value);
+            free(a);
             return 1;
         }
         prev = prev->next;

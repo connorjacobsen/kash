@@ -2,7 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "include/kash.h"
+#include "kash.tab.h"
+
+int linenum = 1;
+int charnum = 1;
+
+#define INCR_LINE() { linenum += 1; charnum = 1; }
+#define INCR_CHAR() { charnum += strlen(yytext); }
 %}
 
 %option noyywrap
@@ -22,16 +28,32 @@
 "printenv" { printf("(printenv %u)\n", yylineno); }
 "unsetenv" { printf("(unsetenv %u)\n", yylineno); }
 "cd" { printf("(cd %u)\n", yylineno); }
-"alias" { printf("(alias %u)\n", yylineno); }
-"unalias" { printf("(unalias %u)\n", yylineno); }
-"bye" { printf("(bye %u)\n", yylineno); }
+"alias" { yylval.string = yytext; INCR_CHAR(); return tALIAS; }
+"unalias" { yylval.string = yytext; INCR_CHAR(); return tUNALIAS; }
+"bye" { INCR_CHAR(); return tBYE; }
 
-\"([^\\\"]|\\.)*\" { printf("(word %s %u)\n", yytext, yylineno); }
-[^ \t\n<<EOF>>]*   { printf("(word %s %u)\n", yytext, yylineno); }
+\"([^\\\"]|\\.)*\" { 
+    yylval.string = yytext;
+    INCR_CHAR();
+    return tWORD;
+}
+[^ \t\n<<EOF>>]*   {
+    yylval.string = yytext;
+    INCR_CHAR();
+    return tWORD;
+}
 
-[ \t\n]   {}
-.       { printf("I got nothing.\n"); }
+[ \t]   {
+    INCR_CHAR();
+}
 
-<<EOF>>     {printf("(eof %u)\n", yylineno); return 0; }
+\n {
+    INCR_LINE();
+    return tNEWLINE;
+}
+
+.       { printf("%s\n", yytext); INCR_CHAR(); }
+
+<<EOF>>     {printf("(eof %u)\n", yylineno); exit(0); }
 
 %%

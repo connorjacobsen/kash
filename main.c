@@ -1,4 +1,5 @@
 #include "include/kash.h"
+#include "kash.tab.h"
 
 pid_t shell_pgid;
 struct termios shell_tmodes;
@@ -44,7 +45,7 @@ void init_shell()
 
 int main(int argc, char* argv[])
 {
-    yylex();
-
+    initialize_alias_list();
+    yyparse();
     return 0;
 }

@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include "include/minunit.h"
-#include "include/element.h"
-#include "include/map.h"
 
 int tests_run = 0;
 
