@@ -1,6 +1,6 @@
 %{
 #include "stdio.h"
-#include "include/alias.h"
+#include "include/kash.h"
 
 #define YYDEBUG 1
 
@@ -32,6 +32,7 @@ extern FILE *yyin;
 %token tWORD
 %token tBYE
 %token tNEWLINE
+%token tPRINTENV
 
 %%
 
@@ -52,6 +53,9 @@ command:
       }
     | tUNALIAS word {
         unalias($2);
+      }
+    | tPRINTENV {
+        print_env();
       }
 
 word:

@@ -20,10 +20,13 @@ typedef struct job_t {
 } job_t;
 
 /* The active jobs are linked into a list. This is its head. */
-job_t *first_job = NULL;
+extern job_t *first_job; /* = NULL; */
 
 /* The jid to assign to the next created job. */
-int next_jid = 1;
+extern int next_jid; /* = 1; */
+
+/* initializes the values of first_job to NULL, and next_jid to 1 */
+void job_init(void);
 
 /* Initializes a new job_t object. */
 job_t *make_job(pid_t pgid, const char *command);

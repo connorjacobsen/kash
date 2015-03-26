@@ -1,6 +1,6 @@
 CC = cc
 CFLAGS = -g -Wall
-CSOURCES = main.c alias.c
+CSOURCES = main.c alias.c job.c
 GENSOURCES = lex.yy.c kash.tab.c
 ALLSOURCES = $(CSOURCES) $(GENSOURCES)
 OUTPUTFILE = kash
@@ -20,9 +20,6 @@ lex.yy.c: kash.l
 
 kash.tab.c: kash.y
 	$(YACC) $<
-
-.c.o:
-	$(CC) -c $<
 
 clean:
 	rm -f $(CSOURCES:.c=.o)

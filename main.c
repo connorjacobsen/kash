@@ -6,8 +6,19 @@ struct termios shell_tmodes;
 int shell_terminal;
 int shell_is_interactive;
 
+void
+print_env(void)
+{
+    char **env = environ;
+    for (; *env; ++env)
+    {
+        printf("%s\n", *env);
+    }
+}
+
 /* initialize the shell. */
-void init_shell()
+void
+init_shell()
 {
     /* See if we are running interactively */
     shell_terminal = STDIN_FILENO;
@@ -43,9 +54,11 @@ void init_shell()
     }
 }
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
     initialize_alias_list();
+    job_init();
     yyparse();
     return 0;
 }

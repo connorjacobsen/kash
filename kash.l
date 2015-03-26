@@ -25,7 +25,7 @@ int charnum = 1;
 
  /* reserved words */
 "setenv" { printf("(setenv %u)\n", yylineno); }
-"printenv" { printf("(printenv %u)\n", yylineno); }
+"printenv" { return tPRINTENV; }
 "unsetenv" { printf("(unsetenv %u)\n", yylineno); }
 "cd" { printf("(cd %u)\n", yylineno); }
 "alias" { yylval.string = yytext; INCR_CHAR(); return tALIAS; }
