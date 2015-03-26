@@ -50,4 +50,7 @@ char *resolve_alias(char *key);
 /* Returns true if an alias exists for the given name. */
 int alias_exists(char* key);
 
+/* Returns the size of the alias list. */
+int alias_count(void);
+
 #endif /* ALIAS_H_ */

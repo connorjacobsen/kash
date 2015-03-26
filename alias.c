@@ -56,38 +56,53 @@ alias(char* key, char* value)
 int
 unalias(char* key)
 {
-    alias_t *a = head;
-    alias_t *prev = a; /* trailing ptr */
-    for (; a != NULL; a = a->next)
-    {
-        if (strcmp(key, a->key) == 0)
+    /* make sure the list is not empty */
+    if (head == NULL) return 0;
+
+    if (alias_count() == 1) {
+        /* handle single element list */
+        free_alias(head);
+        head = NULL;
+        tail = NULL;
+        return 1;
+    } else if (strcmp(key, head->key) == 0) {
+        alias_t* a = head;
+        head = a->next;
+        free_alias(a);
+        return 1;
+    } else {
+        alias_t *a = head;
+        alias_t *prev = a; /* trailing ptr */
+        for (; a != NULL; a = a->next)
         {
-            if (a == head)
-            {
-                head = a->next;
+            if (strcmp(key, a->key) == 0) {
+                prev->next = a->next;
+                if (a == tail) tail = prev;
+                free_alias(a);
+                return 1;
             }
-            if (a == tail)
-            {
-                tail = prev;
-                prev->next = NULL;
-            } else {
-                prev->next = a->next; /* resolve gap in list */
-            }
-            free(a->key);
-            free(a->value);
-            free(a);
-            return 1;
+            prev = a;
         }
-        prev = prev->next;
     }
     return 0;
+}
+
+/* frees an alias_t* object */
+int
+free_alias(alias_t *a)
+{
+    a->next = NULL;
+    free(a->key);
+    free(a->value);
+    free(a);
+    return 1;
 }
 
 void
 print_aliases(void)
 {
     alias_t *a = head;
-    printf("ALIASES:\n");
+    printf("ALIASES (%d):\n", alias_count());
     for (; a != NULL; a = a->next)
     {
         printf("%s :: %s\n", a->key, a->value);
@@ -141,4 +156,18 @@ alias_exists(char* key)
             return 1;
     }
     return 0;
+}
+
+int
+alias_count(void)
+{
+    int count = 0;
+    if (head == NULL) return count;
+
+    alias_t *a = head;
+    for (; a != NULL; a = a->next)
+    {
+        count++;
+    }
+    return count;
 }
