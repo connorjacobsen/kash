@@ -22,6 +22,12 @@ void print_env(void);
 
 void set_env(char *string);
 
+/**
+ * Redirect stderr to stdout (so that driver will get all output
+ * on the pipe connected to stdout)
+ */
+static void merge_file_descriptors(void);
+
 /* get the current PWD environ variable */
 char* get_pwd(void);
 
@@ -34,5 +40,8 @@ void launch_process(process_t *p, pid_t pgid, int infile,
 
 /* launch a new job */
 void launch_job(job_t *job, int foreground);
+
+/* execute a non built-in method */
+static void kash_exec(char* command_line);
 
 #endif /* KASH_H_ */
