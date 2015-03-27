@@ -33,6 +33,8 @@ extern FILE *yyin;
 %token tBYE
 %token tNEWLINE
 %token tPRINTENV
+%token tPWD
+%token tSETENV
 
 %%
 
@@ -56,6 +58,12 @@ command:
       }
     | tPRINTENV {
         print_env();
+      }
+    | tSETENV word {
+        set_env($2);
+      }
+    | tPWD {
+        printf("%s\n", get_pwd());
       }
 
 word:

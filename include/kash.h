@@ -20,6 +20,11 @@ extern char** environ;
  */
 void print_env(void);
 
+void set_env(char *string);
+
+/* get the current PWD environ variable */
+char* get_pwd(void);
+
 /* initializes the shell */
 void init_shell(void);
 

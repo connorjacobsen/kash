@@ -16,6 +16,25 @@ print_env(void)
     }
 }
 
+void
+set_env(char *string)
+{
+    int success = putenv(string);
+    if (success != 0) printf("Error: Could not successfully setenv!");
+}
+
+char
+*get_pwd(void)
+{
+    return getenv("PWD");
+}
+
+static void
+merge_file_descriptors(void)
+{
+    dup2(STDOUT_FILENO, STDERR_FILENO);
+}
+
 /* initialize the shell. */
 void
 init_shell()
@@ -57,6 +76,7 @@ init_shell()
 int
 main(int argc, char* argv[])
 {
+    merge_file_descriptors();
     initialize_alias_list();
     job_init();
     yyparse();
