@@ -7,19 +7,15 @@
 command_t
 *make_command(char *cmd, char **args, char *infile, char *outfile)
 {
-    printf("1\n");
     command_t *command = malloc(sizeof(command_t));
     command->cmd = strdup(cmd);
-    printf("2\n");
     int arg_count = 0;
     char **argit = args;
     for (; *argit; ++argit)
     {
         ++arg_count;
     }
-    printf("ARGCOUNT: %d\n", arg_count);
     command->args = malloc(arg_count * sizeof(char*)); // chars are 1 byte
-    printf("3\n");
     int i = 0;
     for (; *args; ++args)
     {
@@ -27,13 +23,11 @@ command_t
         ++i;
     }
     command->numargs = i;
-    printf("4\n");
     if (infile != NULL)
         command->infile = strdup(infile);
 
     if (outfile != NULL)
         command->outfile = strdup(outfile);
-    printf("5\n");
     return command;
 }
 
@@ -103,30 +97,23 @@ char
 **arglist_to_strings(arglist_t *arglist)
 {
     assert(arglist != NULL);
-    printf("A\n");
     unsigned int size = arglist_size(arglist);
-    printf("SIZE: %u\n", size);
     char **strings = malloc((sizeof(char*) * size) + 1);
     assert(strings != NULL); /* make sure we have enough memory */
     strings[size] = '\0'; /* assign null terminator */
-    printf("B\n");
     /**
      * arglists are constructed so that the final element
      * points to NULL, signifying the end of the list.
      */
     int i = 0;
     if (size > 0) {
-        printf("Hello!\n");
         while (arglist != NULL) {
-            printf("WORLD!");
             if (arglist->head != NULL) {
-                printf("To copy: %s\n", arglist->head->arg);
                 strings[i] = strdup(arglist->head->arg);
                 ++i;
             }
             arglist = arglist->tail;
         }
-        printf("B2\n");
         char **str = strings;
         // for (; *str; ++str)
         // {
@@ -134,10 +121,8 @@ char
         // }
         while (size-- > 0)
         {
-            printf("STR: %s\n", *str);
             ++str;
         }
     }    
-    printf("C\n");
     return strings;
 }
