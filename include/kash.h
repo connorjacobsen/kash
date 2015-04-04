@@ -40,6 +40,9 @@ char* get_pwd(void);
 /* initializes the shell */
 void init_shell(void);
 
+void
+print_welcome();
+
 /* launch a new process */
 void launch_process(process_t *p, pid_t pgid, int infile,
                     int outfile, int errfile, int foreground);

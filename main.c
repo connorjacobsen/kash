@@ -79,10 +79,22 @@ init_shell()
     
 // }
 
+void
+print_welcome()
+{
+    FILE *fp = fopen("kash.txt", "r");
+    char ch;
+    assert(fp != NULL);
+    while ((ch = fgetc(fp)) != EOF)
+        printf("%c", ch);
+    fclose(fp);
+}
+
 int
 main(int argc, char* argv[])
 {
     init_shell();
+    print_welcome();
     merge_file_descriptors();
     initialize_alias_list();
     //job_init();
