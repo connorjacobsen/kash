@@ -1,6 +1,6 @@
 CC = cc
 CFLAGS = -g -Wall
-CSOURCES = main.c alias.c job.c
+CSOURCES = main.c alias.c job.c command.c
 GENSOURCES = lex.yy.c kash.tab.c
 ALLSOURCES = $(CSOURCES) $(GENSOURCES)
 OUTPUTFILE = kash

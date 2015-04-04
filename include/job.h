@@ -23,7 +23,7 @@ typedef struct job_t {
 extern job_t *first_job; /* = NULL; */
 
 /* The jid to assign to the next created job. */
-extern int next_jid; /* = 1; */
+static int next_jid  = 1;
 
 /* initializes the values of first_job to NULL, and next_jid to 1 */
 void job_init(void);

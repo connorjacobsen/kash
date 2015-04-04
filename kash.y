@@ -2,8 +2,6 @@
 #include "stdio.h"
 #include "include/kash.h"
 
-#define YYDEBUG 1
-
 extern int linenum;
 extern int charnum;
 
@@ -19,10 +17,17 @@ extern FILE *yyin;
 %union {
     int ival;
     char* string;
+    arg_t* argval;
+    arglist_t* arglistval;
+    command_t* cmdval;
 }
 
 %start start
 %type <string> word
+%type <string> arg;
+%type <arglistval> arglist;
+%type <arglistval> arglist_ety;
+%type <cmdval> cmd;
 
 %type <string> tALIAS
 %token tALIAS "alias"
@@ -42,6 +47,7 @@ start: command_list
 
 command_list: command
     | command_list tNEWLINE command
+    ;
 
 command:
     tBYE { exit(0); }
@@ -62,11 +68,41 @@ command:
     | tSETENV word {
         set_env($2);
       }
-    | tPWD {
-        printf("%s\n", get_pwd());
+    | cmd {
+        print_command($1);
+      }
+    ;
+
+cmd:
+    word arglist_ety {
+        $$ = make_command($1, arglist_to_strings($2), NULL, NULL);
       }
 
+arglist_ety: /* empty */ { $$ = make_arglist(NULL, NULL); }
+    | arglist {
+        $$ = $1;
+      }
+    ;
+
+arglist:
+    arg {
+        $$ = make_arglist($1, NULL);
+      }
+    | arglist arg {
+        $$ = make_arglist($2, $1);
+      }
+    ;
+
+arg:
+    word {
+      $$ = make_arg($1);
+    }
+    ;
+
 word:
-    tWORD
+    tWORD {
+      $$ = $1;
+    }
+    ;
 
 %%

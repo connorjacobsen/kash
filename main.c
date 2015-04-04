@@ -73,12 +73,19 @@ init_shell()
     }
 }
 
+// static void
+// kash_exec(char *command_line)
+// {
+    
+// }
+
 int
 main(int argc, char* argv[])
 {
+    init_shell();
     merge_file_descriptors();
     initialize_alias_list();
-    job_init();
+    //job_init();
     yyparse();
     return 0;
 }

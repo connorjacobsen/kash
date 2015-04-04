@@ -3,9 +3,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <termios.h>
 #include <unistd.h>
+#include <string.h>
+#include <ctype.h>
+#include <errno.h>
+
 #include "constants.h"
+#include "command.h"
 #include "alias.h"
 #include "job.h"
 #include "process.h"

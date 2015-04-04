@@ -1,7 +1,7 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "include/kash.h"
 #include "kash.tab.h"
 
 int linenum = 1;
@@ -31,7 +31,6 @@ int charnum = 1;
 "alias" { yylval.string = yytext; INCR_CHAR(); return tALIAS; }
 "unalias" { yylval.string = yytext; INCR_CHAR(); return tUNALIAS; }
 "bye" { INCR_CHAR(); return tBYE; }
-"pwd" { INCR_CHAR(); return tPWD; }
 
 \"([^\\\"]|\\.)*\" { 
     yylval.string = yytext;
