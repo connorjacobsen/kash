@@ -15,10 +15,7 @@ Korn Again SHell for COP4600
 
 - echo
     - prints args out in reverse order
-- cd
-    - PWD not updated correctly
 - find all char* memory leaks...
     - args
     - arglists
     - after command execution
-    - split string (?)
