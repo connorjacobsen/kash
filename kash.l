@@ -17,7 +17,7 @@ int charnum = 1;
 %%
 
 "<"  { printf("(meta %s %u)\n", yytext, yylineno); }
-">"  { printf("(meta %s %u)\n", yytext, yylineno); }
+">"  { INCR_CHAR(); return FILEIN; }
 "|"  { printf("(meta %s %u)\n", yytext, yylineno); }
 "&"  { printf("(meta %s %u)\n", yytext, yylineno); }
 "\\" { printf("(meta %s %u)\n", yytext, yylineno); }
@@ -27,7 +27,6 @@ int charnum = 1;
 "setenv" { INCR_CHAR(); return tSETENV; }
 "printenv" { return tPRINTENV; }
 "unsetenv" { printf("(unsetenv %u)\n", yylineno); }
-"cd" { printf("(cd %u)\n", yylineno); }
 "alias" { yylval.string = yytext; INCR_CHAR(); return tALIAS; }
 "unalias" { yylval.string = yytext; INCR_CHAR(); return tUNALIAS; }
 "bye" { INCR_CHAR(); return tBYE; }

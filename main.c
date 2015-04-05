@@ -89,11 +89,13 @@ kash_exec(command_t *command)
 
     if(command->outfile != NULL){
         out = fopen(command->outfile, "w+");
+        printf("OUTFILE: %s\n", command->outfile);
         fd_out = fileno(out);
     }
 
     if (is_built_in(command)) {
         /* handle built in here */
+        printf("BUILT IN!\n");
     } else {
         pid_t pid = fork();
 

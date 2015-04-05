@@ -27,6 +27,7 @@ extern FILE *yyin;
 %type <string> arg
 %type <arglistval> arglist
 %type <arglistval> arglist_ety
+%type <string> outfile_ety
 %type <cmdval> cmd
 
 %type <string> tALIAS
@@ -40,6 +41,7 @@ extern FILE *yyin;
 %token tPRINTENV
 %token tPWD
 %token tSETENV
+%token FILEIN
 
 %%
 
@@ -74,8 +76,8 @@ command:
     ;
 
 cmd:
-    word arglist_ety {
-        $$ = make_command($1, arglist_to_strings($2), NULL, NULL);
+    word arglist_ety outfile_ety {
+        $$ = make_command($1, arglist_to_strings($2), NULL, $3);
       }
 
 arglist_ety: /* empty */ { $$ = make_arglist(NULL, NULL); }
@@ -98,6 +100,12 @@ arg:
       $$ = make_arg($1);
     }
     ;
+
+outfile_ety: /* empty */ { $$ = NULL; }
+    | FILEIN word {
+        printf("HERE!\n");
+        $$ = $2;
+      }
 
 word:
     tWORD {

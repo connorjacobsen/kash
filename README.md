@@ -10,3 +10,8 @@
 
 # kash
 Korn Again SHell for COP4600
+
+## Known Bugs
+
+- echo
+    - prints args out in reverse order
