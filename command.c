@@ -34,7 +34,7 @@ command_t
 void
 print_command(command_t *cmd)
 {
-    printf("Command: %s\n", cmd->cmd);
+    printf("Command: '%s'\n", cmd->cmd);
     printf("Args:\n");
     print_command_args(cmd);
 }
@@ -51,6 +51,32 @@ print_command_args(command_t *cmd)
         printf("%s\n", args[i]);
     }
 
+}
+
+int
+is_built_in(command_t* command)
+{
+    if (strcmp("setenv", command->cmd) == 0) return 1;
+    if (strcmp("printenv", command->cmd) == 0) return 1;
+    if (strcmp("unsetenv", command->cmd) == 0) return 1;
+    if (strcmp("cd", command->cmd) == 0) return 1;
+    if (strcmp("alias", command->cmd) == 0) return 1;
+    if (strcmp("unalias", command->cmd) == 0) return 1;
+    if (strcmp("bye", command->cmd) == 0) return 1;
+    return 0;
+}
+
+char
+**prepend_command_to_args(command_t *command)
+{
+    /* +1 for the NULL pointer, and +1 for the command name. */
+    char **exec_args = malloc(command->numargs * sizeof(char*) + 2);
+    exec_args[command->numargs + 1] = NULL;
+    exec_args[0] = command->cmd; // command goes at head of list
+    int i;
+    for (i = 0; i < command->numargs; ++i)
+        exec_args[i+1] = command->args[i];
+    return exec_args;
 }
 
 arg_t
@@ -100,7 +126,7 @@ char
     unsigned int size = arglist_size(arglist);
     char **strings = malloc((sizeof(char*) * size) + 1);
     assert(strings != NULL); /* make sure we have enough memory */
-    strings[size] = '\0'; /* assign null terminator */
+    strings[size] = NULL; /* assign null terminator */
     /**
      * arglists are constructed so that the final element
      * points to NULL, signifying the end of the list.

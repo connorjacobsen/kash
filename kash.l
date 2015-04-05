@@ -49,6 +49,7 @@ int charnum = 1;
 
 \n {
     INCR_LINE();
+    // printf("%s", kPROMPT);
     return tNEWLINE;
 }
 

@@ -73,11 +73,50 @@ init_shell()
     }
 }
 
-// static void
-// kash_exec(char *command_line)
-// {
-    
-// }
+void
+kash_exec(command_t *command)
+{
+    // printf("BUILT IN: %d\n", is_built_in(command));
+    FILE *in = NULL;
+    FILE *out = NULL;
+    int fd_in = STDIN_FILENO;
+    int fd_out = STDOUT_FILENO;
+
+    if(command->infile != NULL){
+        in = fopen(command->infile, "r");
+        fd_in = fileno(in);
+    }
+
+    if(command->outfile != NULL){
+        out = fopen(command->outfile, "w+");
+        fd_out = fileno(out);
+    }
+
+    if (is_built_in(command)) {
+        /* handle built in here */
+    } else {
+        pid_t pid = fork();
+
+        if(pid == 0) {
+            setpgid(0, 0); // Group processes
+            // Execute the command
+            if(fd_in != STDIN_FILENO){
+                // Redirect standard input and err to file's descriptor
+                dup2(fd_in, STDIN_FILENO);
+                dup2(fd_in, STDERR_FILENO);
+            }
+            if(fd_out != STDOUT_FILENO){
+                dup2(fd_out, STDOUT_FILENO);
+            }
+            char **args = prepend_command_to_args(command);
+            int result = execvp(args[0], args);
+        }
+
+        // add a job to the job list
+
+        // do check for background vs. foreground.
+    }
+}
 
 void
 print_welcome()
@@ -98,6 +137,7 @@ main(int argc, char* argv[])
     merge_file_descriptors();
     initialize_alias_list();
     //job_init();
+    printf("%s", kPROMPT);
     yyparse();
     return 0;
 }

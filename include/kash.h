@@ -51,6 +51,7 @@ void launch_process(process_t *p, pid_t pgid, int infile,
 void launch_job(job_t *job, int foreground);
 
 /* execute a non built-in method */
-static void kash_exec(char* command_line);
+void
+kash_exec(command_t *command);
 
 #endif /* KASH_H_ */

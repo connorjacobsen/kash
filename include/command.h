@@ -28,6 +28,19 @@ print_command(command_t *cmd);
 void
 print_command_args(command_t *cmd);
 
+/**
+ * Returns 0 if the command is not a built in command,
+ * returns 1 if it IS a built in command.
+ */
+int
+is_built_in(command_t *command);
+
+/**
+ * Creates a new char* array to send to execvp() call.
+ */
+char
+**prepend_command_to_args(command_t *command);
+
 arg_t
 *make_arg(char *arg);
 

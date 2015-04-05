@@ -24,10 +24,10 @@ extern FILE *yyin;
 
 %start start
 %type <string> word
-%type <string> arg;
-%type <arglistval> arglist;
-%type <arglistval> arglist_ety;
-%type <cmdval> cmd;
+%type <string> arg
+%type <arglistval> arglist
+%type <arglistval> arglist_ety
+%type <cmdval> cmd
 
 %type <string> tALIAS
 %token tALIAS "alias"
@@ -69,7 +69,7 @@ command:
         set_env($2);
       }
     | cmd {
-        print_command($1);
+        kash_exec($1);
       }
     ;
 
@@ -101,7 +101,12 @@ arg:
 
 word:
     tWORD {
-      $$ = $1;
+      int strsize = strlen($1) + 1;
+      char *w = malloc(sizeof(char) * strlen($1) + 1);
+      assert(w != NULL);
+      strcpy(w, $1);
+      w[strsize] = '\0';
+      $$ = w;
     }
     ;
 
