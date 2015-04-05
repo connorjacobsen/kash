@@ -17,9 +17,10 @@ command_t
     }
     command->args = malloc(arg_count * sizeof(char*)); // chars are 1 byte
     int i = 0;
+    int j = arg_count-1;
     for (; *args; ++args)
     {
-        command->args[i] = strdup(*args);
+        command->args[j--] = strdup(*args);
         ++i;
     }
     command->numargs = i;

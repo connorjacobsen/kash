@@ -135,13 +135,18 @@ print_welcome()
 void
 handle_built_in(command_t *command)
 {
-    // if (strcmp("setenv", command->cmd) == 0) return 1;
-    // if (strcmp("printenv", command->cmd) == 0) return 1;
+    if (strcmp("setenv", command->cmd) == 0) {
+        if (command->numargs == 2)
+            kash_setenv(command->args[0], command->args[1]);
+        else
+            printf("Wrong number of args to command: setenv\n");
+    }
+    if (strcmp("printenv", command->cmd) == 0) print_env();
     // if (strcmp("unsetenv", command->cmd) == 0) return 1;
     if (strcmp("cd", command->cmd) == 0) change_dir(command);
     // if (strcmp("alias", command->cmd) == 0) return 1;
     // if (strcmp("unalias", command->cmd) == 0) return 1;
-    // if (strcmp("bye", command->cmd) == 0) return 1;
+    if (strcmp("bye", command->cmd) == 0) exit(0);
     return;
 }
 
@@ -165,6 +170,12 @@ update_path(char *dir)
     char buffer[1024];
     getcwd(buffer, 1023);
     setenv("PWD", buffer, 1);
+}
+
+void
+kash_setenv(char *var, char *value)
+{
+    setenv(var, value, 1);
 }
 
 int

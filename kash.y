@@ -52,8 +52,7 @@ command_list: command
     ;
 
 command:
-    tBYE { exit(0); }
-    | tALIAS { print_aliases(); }
+    tALIAS { print_aliases(); }
     | tALIAS word word {
         char* args = $2; char* arg2 = $3;
         int diff = arg2-args; char arg1[diff];
@@ -63,12 +62,6 @@ command:
       }
     | tUNALIAS word {
         unalias($2);
-      }
-    | tPRINTENV {
-        print_env();
-      }
-    | tSETENV word {
-        set_env($2);
       }
     | cmd {
         kash_exec($1);
@@ -103,7 +96,6 @@ arg:
 
 outfile_ety: /* empty */ { $$ = NULL; }
     | FILEIN word {
-        printf("HERE!\n");
         $$ = $2;
       }
 

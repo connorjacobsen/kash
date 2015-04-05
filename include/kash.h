@@ -66,12 +66,17 @@ change_dir(command_t *command);
 /**
  * The PWD environment variable needs to be correctly set
  * after we change the working directory with change_dir.
- *
- * if @dir == ".", we do NOT update PWD.
- * if @dir == "..", we need to remove the last '/' from the path.
- * otherwise, we need to set PWD to HOME + @dir.
  */
 void
 update_path(char *dir);
+
+/**
+ * Sets the variable @var in the environ to be @value.
+ *
+ * Named in such a way to avoid conflict with the unix
+ * built-in function setenv()
+ */
+void
+kash_setenv(char *var, char *value);
 
 #endif /* KASH_H_ */
