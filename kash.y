@@ -52,18 +52,7 @@ command_list: command
     ;
 
 command:
-    tALIAS { print_aliases(); }
-    | tALIAS word word {
-        char* args = $2; char* arg2 = $3;
-        int diff = arg2-args; char arg1[diff];
-        strncpy(arg1, args, diff);
-        arg1[diff-1] = '\0';
-        alias(arg1, arg2);
-      }
-    | tUNALIAS word {
-        unalias($2);
-      }
-    | cmd {
+    cmd {
         kash_exec($1);
       }
     ;

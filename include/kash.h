@@ -19,6 +19,11 @@
 /* may not be declared in unistd.h */
 extern char** environ;
 
+extern int linenum;
+extern int charnum;
+
+#define KERROR(f) printf("Wrong number of args to command: %s, at %d:%d\n", f, linenum, charnum)
+
 /**
  * Prints all environment variables.
  *

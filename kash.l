@@ -23,11 +23,6 @@ int charnum = 1;
 "\\" { printf("(meta %s %u)\n", yytext, yylineno); }
 \"   { printf("(meta %s %u)\n", yytext, yylineno); }
 
- /* reserved words */
-"unsetenv" { printf("(unsetenv %u)\n", yylineno); }
-"alias" { yylval.string = yytext; INCR_CHAR(); return tALIAS; }
-"unalias" { yylval.string = yytext; INCR_CHAR(); return tUNALIAS; }
-
 \"([^\\\"]|\\.)*\" { 
     yylval.string = yytext;
     INCR_CHAR();

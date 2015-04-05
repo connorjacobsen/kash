@@ -94,8 +94,6 @@ kash_exec(command_t *command)
     }
 
     if (is_built_in(command)) {
-        /* handle built in here */
-        printf("BUILT IN!\n");
         handle_built_in(command);
     } else {
         pid_t pid = fork();
@@ -139,13 +137,31 @@ handle_built_in(command_t *command)
         if (command->numargs == 2)
             kash_setenv(command->args[0], command->args[1]);
         else
-            printf("Wrong number of args to command: setenv\n");
+            KERROR("setenv");
     }
     if (strcmp("printenv", command->cmd) == 0) print_env();
-    // if (strcmp("unsetenv", command->cmd) == 0) return 1;
+    if (strcmp("unsetenv", command->cmd) == 0) {
+        if (command->numargs == 1)
+            unsetenv(command->args[0]);
+        else
+            KERROR("unsetenv");
+    }
     if (strcmp("cd", command->cmd) == 0) change_dir(command);
-    // if (strcmp("alias", command->cmd) == 0) return 1;
-    // if (strcmp("unalias", command->cmd) == 0) return 1;
+    if (strcmp("alias", command->cmd) == 0) {
+        if (command->numargs == 0) {
+            print_aliases();
+        } else if (command->numargs == 2) {
+            alias(command->args[0], command->args[1]);
+        } else {
+            KERROR("alias");
+        }
+    }
+    if (strcmp("unalias", command->cmd) == 0) {
+        if (command->numargs == 1) {
+            unalias(command->args[0]);
+        } else
+            KERROR("unalias");
+    }
     if (strcmp("bye", command->cmd) == 0) exit(0);
     return;
 }
