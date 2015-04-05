@@ -96,6 +96,7 @@ kash_exec(command_t *command)
     if (is_built_in(command)) {
         /* handle built in here */
         printf("BUILT IN!\n");
+        handle_built_in(command);
     } else {
         pid_t pid = fork();
 
@@ -129,6 +130,41 @@ print_welcome()
     while ((ch = fgetc(fp)) != EOF)
         printf("%c", ch);
     fclose(fp);
+}
+
+void
+handle_built_in(command_t *command)
+{
+    // if (strcmp("setenv", command->cmd) == 0) return 1;
+    // if (strcmp("printenv", command->cmd) == 0) return 1;
+    // if (strcmp("unsetenv", command->cmd) == 0) return 1;
+    if (strcmp("cd", command->cmd) == 0) change_dir(command);
+    // if (strcmp("alias", command->cmd) == 0) return 1;
+    // if (strcmp("unalias", command->cmd) == 0) return 1;
+    // if (strcmp("bye", command->cmd) == 0) return 1;
+    return;
+}
+
+void
+change_dir(command_t *command)
+{
+    char *dir;
+    if (command->numargs == 0) {
+        dir = getenv("HOME");
+    } else {
+        dir = command->args[0];
+    }
+    int result = chdir(dir);
+    if (result == 0)
+        update_path(dir); // only update PWD on success
+}
+
+void
+update_path(char *dir)
+{
+    char buffer[1024];
+    getcwd(buffer, 1023);
+    setenv("PWD", buffer, 1);
 }
 
 int

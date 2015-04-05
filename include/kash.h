@@ -54,4 +54,24 @@ void launch_job(job_t *job, int foreground);
 void
 kash_exec(command_t *command);
 
+/**
+ * Built in command handlers.
+ */
+void
+handle_built_in(command_t *command);
+
+void
+change_dir(command_t *command);
+
+/**
+ * The PWD environment variable needs to be correctly set
+ * after we change the working directory with change_dir.
+ *
+ * if @dir == ".", we do NOT update PWD.
+ * if @dir == "..", we need to remove the last '/' from the path.
+ * otherwise, we need to set PWD to HOME + @dir.
+ */
+void
+update_path(char *dir);
+
 #endif /* KASH_H_ */
