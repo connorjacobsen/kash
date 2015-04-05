@@ -24,6 +24,8 @@ Korn Again SHell for COP4600
 
 ## Features Not Implemented
 
+The only basic infrastructure not yet implemented is support for pipes. Once this is done, all of the other unimplemented features should come together fairly easily.
+
 - Alias resolving
     - Function exists, but is not yet hooked up.
 - Pipelines
