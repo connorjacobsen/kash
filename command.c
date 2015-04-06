@@ -5,7 +5,7 @@
 #include "include/command.h"
 
 command_t
-*make_command(char *cmd, char **args, char *infile, char *outfile)
+*make_command(char *cmd, char **args)
 {
     command_t *command = malloc(sizeof(command_t));
     command->cmd = strdup(cmd);
@@ -24,11 +24,6 @@ command_t
         ++i;
     }
     command->numargs = i;
-    if (infile != NULL)
-        command->infile = strdup(infile);
-
-    if (outfile != NULL)
-        command->outfile = strdup(outfile);
     return command;
 }
 
@@ -65,6 +60,46 @@ is_built_in(command_t* command)
     if (strcmp("unalias", command->cmd) == 0) return 1;
     if (strcmp("bye", command->cmd) == 0) return 1;
     return 0;
+}
+
+command_list_t
+*make_command_list(command_t *head, command_list_t *tail)
+{
+    command_list_t *list = malloc(sizeof(command_list_t));
+    assert(list != NULL); /* memory check */
+    list->head = head;
+    list->tail = tail;
+    return list;
+}
+
+unsigned int
+command_list_size(command_list_t *list)
+{
+    unsigned int size = 0;
+    while (list != NULL) {
+        if (list->head != NULL) ++size;
+        list = list->tail;
+    }
+    return size;
+}
+
+/* still needs to be tested */
+command_t
+**command_list_to_array(command_list_t *list)
+{
+    unsigned int size = command_list_size(list);
+    command_t **clist = malloc(sizeof(command_t*));
+    assert(clist != NULL);
+    clist[size--] = NULL;
+    while (list != NULL)
+    {
+        if (list->head != NULL)
+        {
+            clist[size--] = list->head;
+        }
+        list = list->tail;
+    }
+    return clist;
 }
 
 char

@@ -74,22 +74,23 @@ init_shell()
 }
 
 void
-kash_exec(command_t *command)
+kash_exec(command_list_t *list, char *stdin, char *stdout)
 {
+    command_t *command = list->head;
+    if (command == NULL) return;
     // printf("BUILT IN: %d\n", is_built_in(command));
     FILE *in = NULL;
     FILE *out = NULL;
     int fd_in = STDIN_FILENO;
     int fd_out = STDOUT_FILENO;
 
-    if(command->infile != NULL){
-        in = fopen(command->infile, "r");
+    if(stdin != NULL){
+        in = fopen(stdin, "r");
         fd_in = fileno(in);
     }
 
-    if(command->outfile != NULL){
-        out = fopen(command->outfile, "w+");
-        printf("OUTFILE: %s\n", command->outfile);
+    if(stdout != NULL){
+        out = fopen(stdout, "w+");
         fd_out = fileno(out);
     }
 

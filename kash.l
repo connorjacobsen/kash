@@ -16,9 +16,9 @@ int charnum = 1;
 
 %%
 
-"<"  { printf("(meta %s %u)\n", yytext, yylineno); }
-">"  { INCR_CHAR(); return FILEIN; }
-"|"  { printf("(meta %s %u)\n", yytext, yylineno); }
+"<"  { INCR_CHAR(); return FILEIN; }
+">"  { INCR_CHAR(); return FILEOUT; }
+"|"  { INCR_CHAR(); return PIPE; }
 "&"  { printf("(meta %s %u)\n", yytext, yylineno); }
 "\\" { printf("(meta %s %u)\n", yytext, yylineno); }
 \"   { printf("(meta %s %u)\n", yytext, yylineno); }
@@ -40,7 +40,6 @@ int charnum = 1;
 
 \n {
     INCR_LINE();
-    // printf("%s", kPROMPT);
     return tNEWLINE;
 }
 

@@ -5,21 +5,24 @@ typedef struct command_t {
     char *cmd;      /* name of the command */
     char **args;    /* array of arguments to the command */
     int  numargs;
-    char *infile;   /* STDIN for command  */
-    char *outfile;  /* STDOUT for command */
 } command_t;
 
+typedef struct command_list_t {
+    struct command_t *head;
+    struct command_list_t *tail;
+} command_list_t;
+
 typedef struct arg_t {
-    char* arg;
+    char *arg;
 } arg_t;
 
 typedef struct arglist_t {
-    arg_t *head;
+    struct arg_t *head;
     struct arglist_t *tail;
 } arglist_t;
 
 command_t 
-*make_command(char *cmd, char **args, char *infile, char *outfile);
+*make_command(char *cmd, char **args);
 
 /* Prints a command, useful for debugging. */
 void
@@ -34,6 +37,35 @@ print_command_args(command_t *cmd);
  */
 int
 is_built_in(command_t *command);
+
+/**
+ * Creates a new command_list_t object and returns a pointer to it.
+ */
+command_list_t
+*make_command_list(command_t *head, command_list_t *tail);
+
+/**
+ * Returns the size of the command_list_t.
+ */
+unsigned int
+command_list_size(command_list_t *list);
+
+/**
+ * The cons-cell style list is easy to build in the parser, but
+ * it is not as convenient to operate on as an array. This method
+ * returns a nice array that we can operate on the pipe_commmands_t
+ * more easily.
+ *
+ * The end of the list is marked by a NULL pointer.
+ */
+command_t
+**command_list_to_array(command_list_t *list);
+
+/**
+ * Executes a set of pipelined commands.
+ */
+void
+execute_command_list(command_list_t *list);
 
 /**
  * Creates a new char* array to send to execvp() call.

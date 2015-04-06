@@ -20,6 +20,7 @@ extern FILE *yyin;
     arg_t* argval;
     arglist_t* arglistval;
     command_t* cmdval;
+    command_list_t* cmdlistval;
 }
 
 %start start
@@ -27,21 +28,17 @@ extern FILE *yyin;
 %type <string> arg
 %type <arglistval> arglist
 %type <arglistval> arglist_ety
+%type <string> infile_ety
 %type <string> outfile_ety
 %type <cmdval> cmd
+%type <cmdlistval> cmd_list_ety
+%type <cmdlistval> cmd_list
 
-%type <string> tALIAS
-%token tALIAS "alias"
-%type <string> tUNALIAS
-%token tUNALIAS "unalias"
 %type <string> tWORD
 %token tWORD
-%token tBYE
+%token FILEIN FILEOUT
+%token PIPE 
 %token tNEWLINE
-%token tPRINTENV
-%token tPWD
-%token tSETENV
-%token FILEIN
 
 %%
 
@@ -52,15 +49,28 @@ command_list: command
     ;
 
 command:
-    cmd {
-        kash_exec($1);
+    cmd_list_ety infile_ety outfile_ety {
+        kash_exec($1, $2, $3);
+      }
+    ;
+
+cmd_list_ety: /* empty */ { $$ = NULL; }
+    | cmd_list { $$ = $1; }
+    ;
+
+cmd_list:
+    cmd { $$ = make_command_list($1, NULL); }
+    | cmd_list PIPE cmd {
+        $$ = make_command_list($3, $1);
       }
     ;
 
 cmd:
-    word arglist_ety outfile_ety {
-        $$ = make_command($1, arglist_to_strings($2), NULL, $3);
+    word arglist_ety {
+        $$ = make_command($1, arglist_to_strings($2));
       }
+    ;
+    
 
 arglist_ety: /* empty */ { $$ = make_arglist(NULL, NULL); }
     | arglist {
@@ -83,8 +93,13 @@ arg:
     }
     ;
 
-outfile_ety: /* empty */ { $$ = NULL; }
+infile_ety: /* empty */ { $$ = NULL; }
     | FILEIN word {
+        $$ = $2;
+      }
+
+outfile_ety: /* empty */ { $$ = NULL; }
+    | FILEOUT word {
         $$ = $2;
       }
 
