@@ -27,6 +27,8 @@ Need to change `make_command` for this. Can also remove `pipe_command_t` and use
     - cd
 - Basic (single) command execution
 - Basic output file stdout redirection
+- Pipelines
+- Input file redirection
 
 ## Features Not Implemented
 
@@ -34,8 +36,6 @@ The only basic infrastructure not yet implemented is support for pipes. Once thi
 
 - Alias resolving
     - Function exists, but is not yet hooked up.
-- Pipelines
-- Input file redirection
 - Stderr redirection
 - background / foreground
 - Appending to a file for stdout redirect
