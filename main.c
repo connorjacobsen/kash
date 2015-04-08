@@ -97,93 +97,68 @@ kash_exec(command_list_t *list, char *stdin, char *stdout)
 
     command_t *command = clist[0];
 
-    if (size == 1) {
+    /* we have a pipeline */
+    int pipes[size * 2];
+    /* create size*2 pipes */
+    int i, j, k, status = 0, num_children = 0;
+    int pfd_in, pfd_out;
+    for (i = 0; i < size; ++i)
+    {
+        if (pipe(pipes+i*2) < 0)
+        {
+            perror("Couldn't create pipe!");
+            return;
+        }
+    }
+
+    #define CLOSE_ALL_PIPES \
+        for (k = 0; k < size*2; k++) \
+            if (pipes[k] != -1 && close(pipes[k]) == -1) \
+                printf("couldn't close pipefd %d", pipes[k]);
+    #define CLOSE_PREV_PIPE \
+        if (pfd_out != -1 && close(pfd_out) == -1) \
+            printf("couldn't close writing end with pipefd %d", pipes[k]); \
+        else \
+            pipes[j+1] = -1; // to indicate this side is closed
+
+    /* loop through each command */
+    for (i = 0, j = 0; i < size; ++i, j+=2, command = clist[i])
+    {
+        pfd_in  = (i > 0)? pipes[j-2] : -1;
+        pfd_out = (i != (size-1))? pipes[j+1] : -1;
+        
         if (is_built_in(command)) {
             handle_built_in(command);
         } else {
+            num_children++;
             pid_t pid = fork();
 
             if(pid == 0) {
-                setpgid(0, 0); // Group processes
-                // Execute the command
-                if(fd_in != STDIN_FILENO){
-                    // Redirect standard input and err to file's descriptor
+                if (pfd_in == -1)
                     dup2(fd_in, STDIN_FILENO);
-                    dup2(fd_in, STDERR_FILENO);
-                }
-                if(fd_out != STDOUT_FILENO){
+                else
+                    dup2(pfd_in, STDIN_FILENO);
+
+                if (pfd_out == -1)
                     dup2(fd_out, STDOUT_FILENO);
-                }
+                else
+                    dup2(pfd_out, STDOUT_FILENO);
+                CLOSE_ALL_PIPES;
                 char **args = prepend_command_to_args(command);
-                int result = execvp(args[0], args);
-            }
-
-            // add a job to the job list
-
-            // do check for background vs. foreground.
-        }
-    } else {
-        /* we have a pipeline */
-        int pipes[size * 2];
-        /* create size*2 pipes */
-        int i, j, k, status = 0, num_children = 0;
-        int pfd_in, pfd_out;
-        for (i = 0; i < size; ++i)
-        {
-            if (pipe(pipes+i*2) < 0)
-            {
-                perror("Couldn't create pipe!");
-                return;
-            }
-        }
-
-        #define CLOSE_ALL_PIPES \
-            for (k = 0; k < size*2; k++) \
-                if (pipes[k] != -1 && close(pipes[k]) == -1) \
-                    printf("couldn't close pipefd %d", pipes[k]);
-        #define CLOSE_PREV_PIPE \
-            if (pfd_out != -1 && close(pfd_out) == -1) \
-                printf("couldn't close writing end with pipefd %d", pipes[k]); \
-            else \
-                pipes[j+1] = -1; // to indicate this side is closed
-
-        /* loop through each command */
-        for (i = 0, j = 0; i < size; ++i, j+=2, command = clist[i])
-        {
-            pfd_in  = (i > 0)? pipes[j-2] : -1;
-            pfd_out = (i != (size-1))? pipes[j+1] : -1;
-            
-            if (is_built_in(command)) {
-                handle_built_in(command);
-            } else {
-                num_children++;
-                pid_t pid = fork();
-
-                if(pid == 0) {
-                    if (pfd_in == -1)
-                        dup2(fd_in, STDIN_FILENO);
-                    else
-                        dup2(pfd_in, STDIN_FILENO);
-
-                    if (pfd_out == -1)
-                        dup2(fd_out, STDOUT_FILENO);
-                    else
-                        dup2(pfd_out, STDOUT_FILENO);
-                    CLOSE_ALL_PIPES;
-                    char **args = prepend_command_to_args(command);
-                    if (execvp(args[0], args) < 0) {
-                        printf("Couldn't execute command: %s\n", command->cmd);
-                        exit(-1);
-                    }
+                if (execvp(args[0], args) < 0) {
+                    printf("Couldn't execute command: %s\n", command->cmd);
+                    exit(-1);
                 }
-                CLOSE_PREV_PIPE;
             }
+            CLOSE_PREV_PIPE;
         }
-        CLOSE_ALL_PIPES;
-        int status_child = 0;
-        for (k = 0; k < num_children; ++k)
-            wait(&status_child);
     }
+    CLOSE_ALL_PIPES;
+    int status_child = 0;
+    for (k = 0; k < num_children; ++k)
+        wait(&status_child);
+
+    /* handle background / foreground */
 }
 
 void
