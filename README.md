@@ -11,12 +11,6 @@
 # kash
 Korn Again SHell for COP4600
 
-## ToDo:
-
-File redirection should be handled by `kash_exec`, it is simpler than trying to pass the input, output, error, and bg/fg information to each `command_t`.
-
-Need to change `make_command` for this. Can also remove `pipe_command_t` and use only `command_t`.
-
 ## Features Implemented
 
 - All built-in commands:
@@ -31,8 +25,6 @@ Need to change `make_command` for this. Can also remove `pipe_command_t` and use
 - Input file redirection
 
 ## Features Not Implemented
-
-The only basic infrastructure not yet implemented is support for pipes. Once this is done, all of the other unimplemented features should come together fairly easily.
 
 - Alias resolving
     - Function exists, but is not yet hooked up.
@@ -52,14 +44,3 @@ The only basic infrastructure not yet implemented is support for pipes. Once thi
     - args
     - arglists
     - after command execution
-
-cmd_list_ety: /* empty */ { $$ = NULL; }
-    | cmd_list { $$ = $1; }
-    ;
-
-cmd_list:
-    cmd { $$ = make_command_list($1, NULL); }
-    | cmd_list PIPE cmd {
-        $$ = make_command_list($3, $1);
-      }
-    ;
