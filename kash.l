@@ -25,8 +25,10 @@ int charnum = 1;
 \"   { printf("(meta %s %u)\n", yytext, yylineno); }
 
 \"([^\\\"]|\\.)*\" { 
-    yylval.string = yytext;
     INCR_CHAR();
+    yytext++;
+    yytext[strlen(yytext)-1] = 0;
+    yylval.string = yytext;
     return tWORD;
 }
 [^ \t\n<<EOF>>]*   {
