@@ -16,10 +16,11 @@ int charnum = 1;
 
 %%
 
+"2>" { INCR_CHAR(); return STDERRTOK; }
 "<"  { INCR_CHAR(); return FILEIN; }
 ">"  { INCR_CHAR(); return FILEOUT; }
 "|"  { INCR_CHAR(); return PIPE; }
-"&"  { printf("(meta %s %u)\n", yytext, yylineno); }
+"&"  { INCR_CHAR(); return AMPERSAND; }
 "\\" { printf("(meta %s %u)\n", yytext, yylineno); }
 \"   { printf("(meta %s %u)\n", yytext, yylineno); }
 

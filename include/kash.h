@@ -58,7 +58,7 @@ void launch_job(job_t *job, int foreground);
 
 /* execute a non built-in method */
 void
-kash_exec(command_list_t *list, char *stdin, char *stdout);
+kash_exec(command_list_t *list, char *stdin, char *stdout, char *stderr);
 
 /**
  * Built in command handlers.

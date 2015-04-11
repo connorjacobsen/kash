@@ -74,7 +74,7 @@ init_shell()
 }
 
 void
-kash_exec(command_list_t *list, char *stdin, char *stdout)
+kash_exec(command_list_t *list, char *stdin, char *stdout, char *stderr)
 {
     unsigned int size = command_list_size(list);
     command_t **clist = command_list_to_array(list);
@@ -82,17 +82,28 @@ kash_exec(command_list_t *list, char *stdin, char *stdout)
     if (list == NULL) return;
     FILE *in = NULL;
     FILE *out = NULL;
+    FILE *err = NULL;
     int fd_in = STDIN_FILENO;
     int fd_out = STDOUT_FILENO;
+    int fd_err = STDERR_FILENO;
 
-    if(stdin != NULL){
+    if (stdin != NULL) {
         in = fopen(stdin, "r");
         fd_in = fileno(in);
     }
 
-    if(stdout != NULL){
+    if (stdout != NULL) {
         out = fopen(stdout, "w+");
         fd_out = fileno(out);
+    }
+
+    if (stderr != NULL) {
+        if (strcmp(stderr, "&1") == 0) {
+            fd_err = fd_in;
+        } else {
+            err = fopen(stderr, "w+");
+            fd_err = fileno(err);
+        }
     }
 
     command_t *command = clist[0];
@@ -143,6 +154,9 @@ kash_exec(command_list_t *list, char *stdin, char *stdout)
                     dup2(fd_out, STDOUT_FILENO);
                 else
                     dup2(pfd_out, STDOUT_FILENO);
+
+                dup2(fd_err, STDERR_FILENO);
+
                 CLOSE_ALL_PIPES;
                 char **args = prepend_command_to_args(command);
                 if (execvp(args[0], args) < 0) {
