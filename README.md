@@ -23,12 +23,12 @@ Korn Again SHell for COP4600
 - Basic output file stdout redirection
 - Pipelines
 - Input file redirection
+- Stderr redirection
 
 ## Features Not Implemented
 
 - Alias resolving
     - Function exists, but is not yet hooked up.
-- Stderr redirection
 - background / foreground
 - Appending to a file for stdout redirect
 - Wildcard matching
