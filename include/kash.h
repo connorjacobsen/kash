@@ -25,6 +25,14 @@ extern int charnum;
 
 #define KERROR(f) printf("Wrong number of args to command: %s, at %d:%d\n", f, linenum, charnum)
 
+typedef struct outfile_t {
+    char *filename;
+    int append;
+} outfile_t;
+
+outfile_t
+*make_outfile(char *filename, int append);
+
 /**
  * Prints all environment variables.
  *
@@ -58,7 +66,7 @@ void launch_job(job_t *job, int foreground);
 
 /* execute a non built-in method */
 void
-kash_exec(command_list_t *list, char *stdin, char *stdout, char *stderr);
+kash_exec(command_list_t *list, char *stdin, outfile_t *stdout, char *stderr);
 
 /**
  * Built in command handlers.

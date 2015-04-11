@@ -16,6 +16,7 @@ int charnum = 1;
 
 %%
 
+">>" { INCR_CHAR(); return STDOUTAPP; }
 "2>" { INCR_CHAR(); return STDERRTOK; }
 "<"  { INCR_CHAR(); return FILEIN; }
 ">"  { INCR_CHAR(); return FILEOUT; }

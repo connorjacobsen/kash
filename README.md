@@ -21,6 +21,7 @@ Korn Again SHell for COP4600
     - cd
 - Basic (single) command execution
 - Basic output file stdout redirection
+- Appending to a file for stdout redirect
 - Pipelines
 - Input file redirection
 - Stderr redirection
@@ -30,7 +31,6 @@ Korn Again SHell for COP4600
 - Alias resolving
     - Function exists, but is not yet hooked up.
 - background / foreground
-- Appending to a file for stdout redirect
 - Wildcard matching
 - Variable expansion
 - Excluding metacharacters from `words` (except when escaped)

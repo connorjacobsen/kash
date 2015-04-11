@@ -74,7 +74,7 @@ init_shell()
 }
 
 void
-kash_exec(command_list_t *list, char *stdin, char *stdout, char *stderr)
+kash_exec(command_list_t *list, char *stdin, outfile_t *stdout, char *stderr)
 {
     unsigned int size = command_list_size(list);
     command_t **clist = command_list_to_array(list);
@@ -93,7 +93,10 @@ kash_exec(command_list_t *list, char *stdin, char *stdout, char *stderr)
     }
 
     if (stdout != NULL) {
-        out = fopen(stdout, "w+");
+        if (stdout->append == 1)
+            out = fopen(stdout->filename, "a+");
+        else
+            out = fopen(stdout->filename, "w+");
         fd_out = fileno(out);
     }
 
@@ -248,6 +251,16 @@ void
 kash_setenv(char *var, char *value)
 {
     setenv(var, value, 1);
+}
+
+outfile_t
+*make_outfile(char *filename, int append)
+{
+    outfile_t *stdout = malloc(sizeof(outfile_t));
+    assert(stdout != NULL);
+    stdout->filename = strdup(filename);
+    stdout->append = append;
+    return stdout;
 }
 
 int

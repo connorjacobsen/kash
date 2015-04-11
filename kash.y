@@ -21,6 +21,7 @@ extern FILE *yyin;
     arglist_t* arglistval;
     command_t* cmdval;
     command_list_t* cmdlistval;
+    outfile_t* outfileval;
 }
 
 %start start
@@ -29,7 +30,7 @@ extern FILE *yyin;
 %type <arglistval> arglist
 %type <arglistval> arglist_ety
 %type <string> infile_ety
-%type <string> outfile_ety
+%type <outfileval> outfile_ety
 %type <string> stderr_ety
 %type <cmdval> cmd
 %type <cmdlistval> cmd_list_ety
@@ -42,6 +43,7 @@ extern FILE *yyin;
 %token tNEWLINE
 %token AMPERSAND
 %token STDERRTOK
+%token STDOUTAPP
 
 %%
 
@@ -103,8 +105,12 @@ infile_ety: /* empty */ { $$ = NULL; }
 
 outfile_ety: /* empty */ { $$ = NULL; }
     | FILEOUT word {
-        $$ = $2;
+        $$ = make_outfile($2, 0);
       }
+    | STDOUTAPP word {
+        $$ = make_outfile($2, 1);
+      }
+    ;
 
 stderr_ety: /* empty */ { $$ = NULL; }
     | STDERRTOK word {
