@@ -15,6 +15,7 @@
 #include "alias.h"
 #include "job.h"
 #include "process.h"
+#include "util.h"
 
 /* may not be declared in unistd.h */
 extern char** environ;

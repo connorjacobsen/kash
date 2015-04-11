@@ -1,6 +1,6 @@
 CC = cc
 CFLAGS = -g -Wall
-CSOURCES = main.c alias.c job.c command.c
+CSOURCES = main.c alias.c job.c command.c util.c
 GENSOURCES = lex.yy.c kash.tab.c
 ALLSOURCES = $(CSOURCES) $(GENSOURCES)
 OUTPUTFILE = kash
@@ -11,7 +11,7 @@ all: lex.yy.c kash.tab.c
 	$(CC) $(CFLAGS) $(ALLSOURCES) -o $(OUTPUTFILE)
 
 test:
-	$(CC) test.c $(CSOURCES) -o kash_test
+	$(CC) test.c util.c -o kash_test
 	./kash_test
 	rm kash_test
 
