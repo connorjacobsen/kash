@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "include/kash.h"
 #include "kash.tab.h"
 
@@ -29,17 +30,27 @@ int charnum = 1;
     INCR_CHAR();
     yytext++;
     yytext[strlen(yytext)-1] = 0;
-    printf("YYTEXT: '%s'\n", yytext);
-    yylval.string = insert_env_variable(yytext);
-    printf("YYLVAL: '%s'\n", yylval.string);
-    return tWORD;
+    if (contains_env_variable(yytext)) {
+        char *str = insert_env_variable(yytext);
+        int len = strlen(str);
+        while (len > -1)
+            unput(str[len--]);
+    } else {
+        yylval.string = yytext;
+        return tWORD;
+    }
 }
 [^ \t\n]*   {
     INCR_CHAR();
-    yylval.string = insert_env_variable(yytext);
-    printf("YYTEXT: '%s'\n", yytext);
-    printf("YYLVAL: '%s'\n", yylval.string);
-    return tWORD;
+    if (contains_env_variable(yytext)) {
+        char *str = insert_env_variable(yytext);
+        int len = strlen(str);
+        while (len > -1)
+            unput(str[len--]);
+    } else {
+        yylval.string = yytext;
+        return tWORD;
+    }
 }
 
 [ \t]   {
