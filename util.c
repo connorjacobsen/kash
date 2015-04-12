@@ -43,8 +43,10 @@ char
     return list;
 }
 
-// char
-// **concat_string_arrays(char **s1, char **s2)
-// {
+char
+**concat_string_arrays(char **s1, int size1, char **s2, int size2)
+{
+    char** result = malloc(sizeof(char) * 10);
 
-// }
+    return result;
+}

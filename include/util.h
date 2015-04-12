@@ -20,6 +20,6 @@ char
  * Returns pointer to pointers to char.
  */
 char
-**concat_string_arrays(char **s1, char **s2);
+**concat_string_arrays(char **s1, int size1, char **s2, int size2);
 
 #endif /* UTIL_H_ */
