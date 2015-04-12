@@ -8,6 +8,7 @@
 typedef struct alias_t {
     char *key;              /* the name used to identify the alias. */
     char *value;            /* the word for which the name stands in. */
+    int  visited;           /* whether or not the alias has been visited */
     struct alias_t *next;   /* the next alias in the list. */
 } alias_t;
 
@@ -20,6 +21,10 @@ struct alias_t *tail;
 /* Initializes the alias list, should run on startup. */
 void
 initialize_alias_list(void);
+
+/* Sets all `visited` bits to 0 */
+void
+reinit_alias_list(void);
 
 /**
  * Creates an alias between a name and a word.

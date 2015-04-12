@@ -25,6 +25,7 @@ alias_t
 {
     alias_t *a = malloc(sizeof(alias_t));
     assert(a != NULL);
+    a->visited = 0;
     a->next = NULL;
     return a;
 }
@@ -134,16 +135,34 @@ alias_list_is_empty(void)
     return head == NULL;
 }
 
-char
-*resolve_alias(char* key)
+void
+reinit_alias_list(void)
 {
     alias_t *a = head;
     for (; a != NULL; a = a->next)
+        a->visited = 0;
+}
+
+char
+*resolve_alias(char* key)
+{
+    reinit_alias_list(); 
+
+    alias_t *a = head;
+    for (; a != NULL; a = a->next)
     {
-        if (strcmp(key, a->key) == 0)
-            return a->value;
+        if (strcmp(key, a->key) == 0) {
+            if (a->visited == 0 && strcmp(a->key, a->value) != 0) {
+                a->visited = 1;
+                return resolve_alias(a->value);
+            } else {
+                printf("Infinite alias!\n");
+                char str[] = "ERROR!";
+                return str;
+            }
+        }
     }
-    return 0;   
+    return key;   
 }
 
 int

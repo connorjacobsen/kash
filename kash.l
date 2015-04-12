@@ -35,6 +35,11 @@ int charnum = 1;
         int len = strlen(str);
         while (len > -1)
             unput(str[len--]);
+    } else if (alias_exists(yytext)) {
+        char *str = resolve_alias(yytext);
+        int len = strlen(str);
+        while (len > -1)
+            unput(str[len--]);
     } else {
         yylval.string = yytext;
         return tWORD;
@@ -44,6 +49,11 @@ int charnum = 1;
     INCR_CHAR();
     if (contains_env_variable(yytext)) {
         char *str = insert_env_variable(yytext);
+        int len = strlen(str);
+        while (len > -1)
+            unput(str[len--]);
+    } if (alias_exists(yytext)) {
+        char *str = resolve_alias(yytext);
         int len = strlen(str);
         while (len > -1)
             unput(str[len--]);

@@ -26,14 +26,12 @@ Korn Again SHell for COP4600
 - Input file redirection
 - Stderr redirection
 - Variable expansion
+- Alias resolving
 
 ## Features Not Implemented
 
-- Alias resolving
-    - Function exists, but is not yet hooked up.
 - background / foreground
 - Wildcard matching
-- Excluding metacharacters from `words` (except when escaped)
 - Extra credit:
     - tilde expansion
     - tab completion
