@@ -27,7 +27,6 @@ int charnum = 1;
 \"   { printf("(meta %s %u)\n", yytext, yylineno); }
 
 \"([^\\\"]|\\.)*\" {
-    INCR_CHAR();
     yytext++;
     yytext[strlen(yytext)-1] = 0;
     if (contains_env_variable(yytext)) {
@@ -41,6 +40,7 @@ int charnum = 1;
         while (len > -1)
             unput(str[len--]);
     } else {
+        INCR_CHAR();
         yylval.string = yytext;
         return tWORD;
     }
@@ -50,9 +50,10 @@ int charnum = 1;
     if (contains_env_variable(yytext)) {
         char *str = insert_env_variable(yytext);
         int len = strlen(str);
-        while (len > -1)
+        while (len > -1) {
             unput(str[len--]);
-    } if (alias_exists(yytext)) {
+        }
+    } else if (alias_exists(yytext)) {
         char *str = resolve_alias(yytext);
         int len = strlen(str);
         while (len > -1)

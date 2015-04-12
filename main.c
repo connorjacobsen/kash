@@ -193,10 +193,12 @@ void
 handle_built_in(command_t *command)
 {
     if (strcmp("setenv", command->cmd) == 0) {
-        if (command->numargs == 2)
+        print_command(command);
+        if (command->numargs > 1)
             kash_setenv(command->args[0], command->args[1]);
-        else
+        else {
             KERROR("setenv");
+        }
     }
     if (strcmp("printenv", command->cmd) == 0) print_env();
     if (strcmp("unsetenv", command->cmd) == 0) {

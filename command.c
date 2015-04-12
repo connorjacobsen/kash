@@ -44,7 +44,7 @@ print_command_args(command_t *cmd)
     for (; i >= 0; --i)
     {
         printf("%d: ", j++);
-        printf("%s\n", args[i]);
+        printf("'%s'\n", args[i]);
     }
 
 }
