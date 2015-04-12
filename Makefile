@@ -1,9 +1,9 @@
 CC = cc
 CFLAGS = -g -Wall
-CSOURCES = main.c alias.c job.c command.c util.c
+CSOURCES = main.c alias.c job.c command.c util.c variables.c
 GENSOURCES = lex.yy.c kash.tab.c
 ALLSOURCES = $(CSOURCES) $(GENSOURCES)
-OUTPUTFILE = kash
+OUTPUTFILE = shell
 LEX = flex
 YACC = bison -dv -t
 

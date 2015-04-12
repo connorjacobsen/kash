@@ -94,6 +94,7 @@ arglist:
 
 arg:
     word {
+      printf("ARG: '%s'\n", $1);
       $$ = make_arg($1);
     }
     ;
@@ -122,11 +123,12 @@ stderr_ety: /* empty */ { $$ = NULL; }
 
 word:
     tWORD {
+      printf("$1: '%s'\n", $1);
       int strsize = strlen($1) + 1;
       char *w = malloc(sizeof(char) * strlen($1) + 1);
       assert(w != NULL);
-      strcpy(w, $1);
-      w[strsize] = '\0';
+      strncpy(w, $1, strsize);
+      w[strsize] = 0;
       $$ = w;
     }
     ;

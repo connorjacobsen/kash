@@ -140,6 +140,8 @@ kash_exec(command_list_t *list, char *stdin, outfile_t *stdout, char *stderr)
     {
         pfd_in  = (i > 0)? pipes[j-2] : -1;
         pfd_out = (i != (size-1))? pipes[j+1] : -1;
+
+        print_command(command);
         
         if (is_built_in(command)) {
             handle_built_in(command);

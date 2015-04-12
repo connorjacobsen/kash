@@ -25,16 +25,20 @@ int charnum = 1;
 "\\" { printf("(meta %s %u)\n", yytext, yylineno); }
 \"   { printf("(meta %s %u)\n", yytext, yylineno); }
 
-\"([^\\\"]|\\.)*\" { 
+\"([^\\\"]|\\.)*\" {
     INCR_CHAR();
     yytext++;
     yytext[strlen(yytext)-1] = 0;
-    yylval.string = yytext;
+    printf("YYTEXT: '%s'\n", yytext);
+    yylval.string = insert_env_variable(yytext);
+    printf("YYLVAL: '%s'\n", yylval.string);
     return tWORD;
 }
-[^ \t\n<<EOF>>]*   {
-    yylval.string = yytext;
+[^ \t\n]*   {
     INCR_CHAR();
+    yylval.string = insert_env_variable(yytext);
+    printf("YYTEXT: '%s'\n", yytext);
+    printf("YYLVAL: '%s'\n", yylval.string);
     return tWORD;
 }
 
