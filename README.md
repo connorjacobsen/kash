@@ -25,6 +25,7 @@ Korn Again SHell for COP4600
 - Pipelines
 - Input file redirection
 - Stderr redirection
+- Variable expansion
 
 ## Features Not Implemented
 
@@ -32,7 +33,6 @@ Korn Again SHell for COP4600
     - Function exists, but is not yet hooked up.
 - background / foreground
 - Wildcard matching
-- Variable expansion
 - Excluding metacharacters from `words` (except when escaped)
 - Extra credit:
     - tilde expansion
