@@ -27,10 +27,10 @@ Korn Again SHell for COP4600
 - Stderr redirection
 - Variable expansion
 - Alias resolving
+- background / foreground
 
 ## Features Not Implemented
 
-- background / foreground
 - Wildcard matching
 - Extra credit:
     - tilde expansion
