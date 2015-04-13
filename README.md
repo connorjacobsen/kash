@@ -36,6 +36,26 @@ Korn Again SHell for COP4600
     - tilde expansion
     - tab completion
 
+## Building and Running Kash
+
+To build kash:
+
+```bash
+$ make
+```
+
+To run kash:
+
+```
+$ ./shell
+```
+
+To clean the directory before building again:
+
+```
+$ make clean
+```
+
 ## Known Bugs
 
 - find all char* memory leaks...
