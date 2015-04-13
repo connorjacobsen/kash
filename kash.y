@@ -35,6 +35,7 @@ extern FILE *yyin;
 %type <cmdval> cmd
 %type <cmdlistval> cmd_list_ety
 %type <cmdlistval> cmd_list
+%type <ival> bg_ety
 
 %type <string> tWORD
 %token tWORD
@@ -54,8 +55,8 @@ command_list: command
     ;
 
 command:
-    cmd_list_ety infile_ety outfile_ety  stderr_ety {
-        kash_exec($1, $2, $3, $4);
+    cmd_list_ety infile_ety outfile_ety stderr_ety bg_ety {
+        kash_exec($1, $2, $3, $4, $5);
       }
     ;
 
@@ -118,6 +119,10 @@ stderr_ety: /* empty */ { $$ = NULL; }
     | STDERRTOK AMPERSAND "1" {
         $$ = "&1";
       }
+
+bg_ety: /* empty */ { $$ = 0; }
+    | AMPERSAND { $$ = 1; }
+    ;
 
 word:
     tWORD {

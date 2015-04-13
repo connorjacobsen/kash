@@ -29,10 +29,39 @@ char
     return getenv("PWD");
 }
 
-static void
-merge_file_descriptors(void)
+void
+waitfg(pid_t pid)
 {
-    dup2(STDOUT_FILENO, STDERR_FILENO);
+    while(current_fg_job_pid == pid) sleep(1);
+}
+
+/**
+ * The kernel sends a SIGINT to the shell whenever the user
+ * types ctrl-c at the keyboard. Catch it and send it along
+ * to the foreground job.
+ */
+static void
+handle_sigint(int sig)
+{
+    delete_job(first_job, current_fg_job_pid);
+    kill(-current_fg_job_pid, sig);
+}
+
+/**
+ * The kernel sends a SIGCHLD to the shell whenever a child job
+ * terminates (becomes a zombie), or stops bc it received a SIGSTOP
+ * or SIGTSTP signal. The handler reaps all available zombie children,
+ * but doesn't wait for any other currently running children to
+ * terminate.
+ */
+static void
+handle_sigchld(int unused)
+{
+    pid_t pid = waitpid(-1, NULL, WNOHANG);
+    if (pid <= 0) return;
+    if (pid == current_fg_job_pid)
+        current_fg_job_pid = -1;
+    delete_job(first_job, pid);
 }
 
 /* initialize the shell. */
@@ -50,12 +79,14 @@ init_shell()
             kill (- shell_pgid, SIGTTIN);
 
         /* Ignore interactive and job-control signal */
-        signal(SIGINT,  SIG_IGN);
+        // signal(SIGINT,  SIG_IGN);
         signal(SIGQUIT, SIG_IGN);
         signal(SIGTSTP, SIG_IGN);
         signal(SIGTTIN, SIG_IGN);
         signal(SIGTTOU, SIG_IGN);
-        signal(SIGCHLD, SIG_IGN);
+        // signal(SIGCHLD, SIG_IGN);
+        install_signal_handler(SIGINT, handle_sigint);
+        install_signal_handler(SIGCHLD, handle_sigchld);
 
         /* Put ourselves in our own process group. */
         shell_pgid = getpid();
@@ -74,7 +105,7 @@ init_shell()
 }
 
 void
-kash_exec(command_list_t *list, char *stdin, outfile_t *stdout, char *stderr)
+kash_exec(command_list_t *list, char *stdin, outfile_t *stdout, char *stderr, int bg)
 {
     unsigned int size = command_list_size(list);
     command_t **clist = command_list_to_array(list);
@@ -168,6 +199,16 @@ kash_exec(command_list_t *list, char *stdin, outfile_t *stdout, char *stderr)
                 }
             }
             CLOSE_PREV_PIPE;
+
+            add_job(first_job, make_job(pid, command));
+
+            /* handle background / foreground */
+            if (bg) /* background */
+                printf("[%d]\n", pid);
+            else /* foreground */ {
+                current_fg_job_pid = pid;
+                waitfg(pid);
+            }
         }
     }
     CLOSE_ALL_PIPES;
@@ -175,7 +216,9 @@ kash_exec(command_list_t *list, char *stdin, outfile_t *stdout, char *stderr)
     for (k = 0; k < num_children; ++k)
         wait(&status_child);
 
-    /* handle background / foreground */
+    /* free fds for infile and outfile */
+    if(fd_in != STDIN_FILENO) fclose(in);
+    if(fd_out != STDOUT_FILENO) fclose(out);
 }
 
 void
@@ -268,11 +311,10 @@ outfile_t
 int
 main(int argc, char* argv[])
 {
+    job_init();
     init_shell();
     print_welcome();
-    merge_file_descriptors();
     initialize_alias_list();
-    //job_init();
     printf("%s", kPROMPT);
     yyparse();
     return 0;

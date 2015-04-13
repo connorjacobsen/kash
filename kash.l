@@ -75,6 +75,6 @@ int charnum = 1;
 
 .       { printf("%s\n", yytext); INCR_CHAR(); }
 
-<<EOF>>     {printf("(eof %u)\n", yylineno); exit(0); }
+<<EOF>>     {}
 
 %%

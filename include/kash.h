@@ -14,6 +14,7 @@
 #include "command.h"
 #include "alias.h"
 #include "job.h"
+#include "ksignal.h"
 #include "process.h"
 // #include "util.h"
 #include "variables.h"
@@ -34,6 +35,9 @@ typedef struct outfile_t {
 outfile_t
 *make_outfile(char *filename, int append);
 
+void
+waitfg(pid_t pid);
+
 /**
  * Prints all environment variables.
  *
@@ -42,12 +46,6 @@ outfile_t
 void print_env(void);
 
 void set_env(char *string);
-
-/**
- * Redirect stderr to stdout (so that driver will get all output
- * on the pipe connected to stdout)
- */
-static void merge_file_descriptors(void);
 
 /* get the current PWD environ variable */
 char* get_pwd(void);
@@ -67,7 +65,7 @@ void launch_job(job_t *job, int foreground);
 
 /* execute a non built-in method */
 void
-kash_exec(command_list_t *list, char *stdin, outfile_t *stdout, char *stderr);
+kash_exec(command_list_t *list, char *stdin, outfile_t *stdout, char *stderr, int bg);
 
 /**
  * Built in command handlers.
