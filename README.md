@@ -28,10 +28,10 @@ Korn Again SHell for COP4600
 - Variable expansion
 - Alias resolving
 - background / foreground
+- Wildcard matching
 
 ## Features Not Implemented
 
-- Wildcard matching
 - Extra credit:
     - tilde expansion
     - tab completion
@@ -55,10 +55,3 @@ To clean the directory before building again:
 ```
 $ make clean
 ```
-
-## Known Bugs
-
-- find all char* memory leaks...
-    - args
-    - arglists
-    - after command execution
