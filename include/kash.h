@@ -15,7 +15,6 @@
 #include "alias.h"
 #include "job.h"
 #include "ksignal.h"
-#include "process.h"
 #include "variables.h"
 
 /* may not be declared in unistd.h */

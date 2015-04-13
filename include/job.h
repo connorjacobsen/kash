@@ -3,7 +3,6 @@
 
 #include <sys/types.h> /* need pid_t */
 #include "command.h"
-#include "process.h"
 
 /**
  * A job is a pipeline of processes.
