@@ -315,7 +315,23 @@ main(int argc, char* argv[])
     init_shell();
     print_welcome();
     initialize_alias_list();
-    printf("%s", kPROMPT);
-    yyparse();
+    while(1) {
+        printf("%s", kPROMPT);
+        int result = yyparse();
+        printf("VALUE: %d\n", result);
+        switch(result) {
+            /* handle errors */
+            case 0:
+                break;
+            case 1:
+                printf("ERROR: Inavlid syntax, please check your syntax and try again.\n");
+                break;
+            case 2:
+                printf("ERROR: Out of memory, please type `bye` to exit.\n");
+                break;
+            default:
+                break;
+        }
+    }
     return 0;
 }

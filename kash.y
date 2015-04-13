@@ -50,13 +50,15 @@ extern FILE *yyin;
 
 start: command_list
 
-command_list: command
-    | command_list tNEWLINE command
-    ;
+command_list : command
+  | command tNEWLINE command_list
+  | tNEWLINE { return 0; }
+  ;
 
 command:
     cmd_list_ety infile_ety outfile_ety stderr_ety bg_ety {
         kash_exec($1, $2, $3, $4, $5);
+        return 0;
       }
     ;
 
