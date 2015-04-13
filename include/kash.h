@@ -36,6 +36,9 @@ outfile_t
 *make_outfile(char *filename, int append);
 
 void
+print_prompt(void);
+
+void
 waitfg(pid_t pid);
 
 /**

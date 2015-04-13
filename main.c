@@ -308,6 +308,12 @@ outfile_t
     return stdout;
 }
 
+void
+print_prompt(void)
+{
+    printf("%s%s%s: %s $ %s%s", KBOLD, KWHT, kPROMPT, get_pwd(), KNRM, KNOBOLD);
+}
+
 int
 main(int argc, char* argv[])
 {
@@ -316,7 +322,7 @@ main(int argc, char* argv[])
     print_welcome();
     initialize_alias_list();
     while(1) {
-        printf("%s", kPROMPT);
+        print_prompt();
         int result = yyparse();
         printf("VALUE: %d\n", result);
         switch(result) {
