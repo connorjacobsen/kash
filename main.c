@@ -68,6 +68,7 @@ handle_sigchld(int unused)
 void
 init_shell()
 {
+    wchead = NULL;
     /* See if we are running interactively */
     shell_terminal = STDIN_FILENO;
     shell_is_interactive = isatty(shell_terminal);
@@ -84,6 +85,7 @@ init_shell()
         signal(SIGTSTP, SIG_IGN);
         signal(SIGTTIN, SIG_IGN);
         signal(SIGTTOU, SIG_IGN);
+        signal(SIGKILL, SIG_IGN);
         // signal(SIGCHLD, SIG_IGN);
         install_signal_handler(SIGINT, handle_sigint);
         install_signal_handler(SIGCHLD, handle_sigchld);
@@ -326,7 +328,6 @@ main(int argc, char* argv[])
     while(1) {
         print_prompt();
         int result = yyparse();
-        printf("VALUE: %d\n", result);
         switch(result) {
             /* handle errors */
             case 0:

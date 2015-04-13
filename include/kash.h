@@ -16,6 +16,7 @@
 #include "job.h"
 #include "ksignal.h"
 #include "variables.h"
+#include "wildcard.h"
 
 /* may not be declared in unistd.h */
 extern char** environ;
