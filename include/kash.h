@@ -57,13 +57,6 @@ void init_shell(void);
 void
 print_welcome();
 
-/* launch a new process */
-void launch_process(process_t *p, pid_t pgid, int infile,
-                    int outfile, int errfile, int foreground);
-
-/* launch a new job */
-void launch_job(job_t *job, int foreground);
-
 /* execute a non built-in method */
 void
 kash_exec(command_list_t *list, char *stdin, outfile_t *stdout, char *stderr, int bg);

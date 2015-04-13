@@ -225,10 +225,12 @@ void
 print_welcome()
 {
     FILE *fp = fopen("kash.txt", "r");
+    printf("%s", KWHT);
     char ch;
     assert(fp != NULL);
     while ((ch = fgetc(fp)) != EOF)
         printf("%c", ch);
+    printf("%s", KNRM);
     fclose(fp);
 }
 
