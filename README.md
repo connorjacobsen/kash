@@ -13,7 +13,7 @@ Korn Again SHell for COP4600
 
 ### Authors
 
-(Connor Jacobsen)[https://github.com/connorjacobsen] && (Brett Swikle)[https://github.com/bswike]
+[Connor Jacobsen](https://github.com/connorjacobsen) && [Brett Swikle](https://github.com/bswike)
 
 Although all of the commits (currently) belong to me, Brett was instrumental to completeing this project, and many of the commits were a result of pair programming.
 
@@ -49,12 +49,16 @@ Kash was the final assignment for COP4600 -- implementing a Unix shell with some
 
 ## Shell Types
 
+| Type | Description |
+| ---- | ----------- |
 | __word__ | We will use *word* to refer to a sequence of characters which are treated as a logical unit, sometimes referred to as a *token*. *Words* are separated by white space, newlines, and metacharacters. Any other character is valid in a word. If you wish a *word* to contain white space, then you must put double quotes around it. For example, your scanner should interpret `echo test > foo` as 3 words and one metacharacter. However, the command `echo "test > foo"` would be interpreted by the scanner as 2 words, echo and `test > foo` (note that the “” have been removed from `"test > foo"`). |
 | __white space__ | White space consists of the characters space and tab. |
 | __metacharacters__ |  Metacharacters are characters which have special meaning to the shell, and stand only for themselves. Metacharacters cannot be part of a word unless they are preceded by a \ or are inside quotes. The following are metacharacters: < > \| " \ & |
 
 ## Built In Commands
 
+| Command | Description |
+| ------- | ----------- |
 | __setenv variable word__ | This command sets the value of the variable *variable* to be *word*. |
 | __printenv__ |  This command prints out the values of all the environment variables, in the format *variable=value*, one entry per line. |
 | __unsetenv variable__ | This command will remove the binding of *variable*. If the variable is unbound, the command is ignored. |
@@ -77,6 +81,8 @@ Note that the I/O redirection can only appear at the end of the line in your she
 
 Implements a subset of the `ksh` alias mechanism. Only provides simple string substitutions.
 
+| Command | Description |
+| ------- | ----------- |
 | __alias__ | The `alias` command with no arguments lists all of the current aliases. |
 | __alias name word__ | This `alias` command adds a new alias to the shell. An alias is essentially a shorthand form of a long command. For example, you may have an alias `alias lf "/bin/ls -F"` set up so that whenever you type `lf` from the command line, the command that is executed is `/bin/ls -F`. Note that alias expansion is only performed on the *first* word of a command. However, aliases may be nested. |
 | __unalias name__ | The `unalias` command is used to remove the alias for `name` from the
