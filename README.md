@@ -15,7 +15,7 @@ Korn Again SHell for COP4600
 
 [Connor Jacobsen](https://github.com/connorjacobsen) && [Brett Swikle](https://github.com/bswike)
 
-Although all of the commits (currently) belong to me, Brett was instrumental to completeing this project, and many of the commits were a result of pair programming.
+Although all of the commits (currently) belong to me, Brett was instrumental to completing this project, and many of the commits were a result of pair programming.
 
 Some known bugs were left in, and speed was prioritized over completeness, as we needed to get everything (mostly) working by a deadline.
 
