@@ -109,7 +109,7 @@ $ make
 To run kash:
 
 ```
-$ ./shell
+$ ./kash
 ```
 
 To clean the directory before building again:
@@ -125,4 +125,3 @@ $ make clean
         - `command_list_t`, `command_t`, `arglist_t`, and `arg_t` objects. These should be cleaned up after command execution, but are not.
 - aliases resolve immediately, and for items other than the first word of a command.
 - When environment variable values are smaller than the variable that represents them, and there are no quotations involved, we get some weird mash up of the two items, probably due to not pushing enough whitespace back onto the input stream.
-- Currently it also ignores *EOF* due to a misunderstanding in the requirements, but oh well.

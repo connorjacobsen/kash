@@ -3,7 +3,7 @@ CFLAGS = -g -Wall
 CSOURCES = main.c alias.c job.c ksignal.c command.c variables.c wildcard.c
 GENSOURCES = lex.yy.c kash.tab.c
 ALLSOURCES = $(CSOURCES) $(GENSOURCES)
-OUTPUTFILE = shell
+OUTPUTFILE = kash
 LEX = flex
 YACC = bison -dv -t
 

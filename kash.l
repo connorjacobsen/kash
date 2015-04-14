@@ -81,7 +81,7 @@ handle_wildcards(char *line);
 
 .       { printf("%s\n", yytext); INCR_CHAR(); }
 
-<<EOF>>     {}
+<<EOF>>     { exit(0); }
 
 %%
 
